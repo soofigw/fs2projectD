@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - Udemy Lite{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="mb-4">
+        <a href="{% url 'courses:course_list' %}" class="text-decoration-none text-secondary fw-semibold small">
+            ⬅ Volver al catálogo
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="p-5 mb-4 glass-card">
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2" style="border-radius: 8px;">
+                        {{ course.category.name }}
+                    </span>
+                    <span class="badge bg-dark-subtle text-dark fw-bold px-3 py-2 text-uppercase" style="border-radius: 8px;">
+                        {{ course.get_level_display }}
+                    </span>
+                </div>
+                
+                <h1 class="display-5 fw-bold text-dark mb-3">{{ course.title }}</h1>
+                <p class="fs-5 text-secondary" style="line-height: 1.6;">{{ course.description }}</p>
+                
+                {% if course.video_url %}
+                    <div class="mt-4 p-3 bg-light rounded-3 d-flex align-items-center gap-3 border">
+                        <span class="fs-3">🎥</span>
+                        <div>
+                            <h6 class="fw-bold m-0">Video de Introducción Disponible</h6>
+                            <a href="{{ course.video_url }}" target="_blank" class="small text-primary fw-semibold text-decoration-none">Ver presentación externa ↗️</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <h3 class="fw-bold text-dark mb-4">Contenido del Programa</h3>
+            {% if lessons %}
+                <div class="d-flex flex-column gap-3">
+                    {% for lesson in lessons %}
+                        <div class="p-4 glass-card d-flex justify-content-between align-items-center bg-white shadow-xs">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px;">
+                                    {{ lesson.order }}
+                                </span>
+                                <div>
+                                    <h5 class="fw-semibold m-0 text-dark">{{ lesson.title }}</h5>
+                                    <span class="badge bg-light text-secondary border px-2 py-1 mt-1 small text-uppercase" style="font-size: 0.75rem;">
+                                        📦 {{ lesson.get_content_type_display }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            {% if is_enrolled %}
+                                <a href="{% url 'courses:lesson_detail' course.identifier lesson.order %}" class="btn btn-sm btn-outline-dark premium-btn">
+                                    Estudiar
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="p-5 glass-card text-center border-2 border-dashed bg-white">
+                    <span style="font-size: 2.5rem;">📝</span>
+                    <h5 class="fw-bold text-dark mt-3">Próximamente</h5>
+                    <p class="text-secondary mb-0">El instructor aún no ha cargado lecciones para este programa.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="p-4 glass-card shadow-sm position-sticky bg-white" style="top: 90px;">
+                <h5 class="fw-bold mb-4 text-dark">Información Clave</h5>
+                
+                <div class="d-flex flex-column gap-3 mb-4">
+                    <div class="d-flex justify-content-between border-bottom pb-2">
+                        <span class="text-secondary small">⏱️ Duración:</span>
+                        <span class="fw-semibold text-dark">{{ course.duration }} horas</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-2">
+                        <span class="text-secondary small">👨‍🏫 Instructor:</span>
+                        <span class="fw-semibold text-dark">{{ course.instructor.username }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-2">
+                        <span class="text-secondary small">📅 Publicado:</span>
+                        <span class="fw-semibold text-dark">{{ course.created_at|date:"d M Y" }}</span>
+                    </div>
+                </div>
+
+                {% if user.is_authenticated %}
+                    {% if is_enrolled %}
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="small fw-bold text-dark">Tu progreso actual</span>
+                                <span class="badge bg-primary fw-bold">{{ progress_percentage }}%</span>
+                            </div>
+                            <div class="progress" style="height: 10px; border-radius: 999px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: {{ progress_percentage }}%" aria-valuenow="{{ progress_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <a href="{% url 'courses:lesson_detail' course.identifier 1 %}" class="btn btn-dark w-100 premium-btn shadow-sm py-2">
+                            🚀 Continuar Aprendiendo
+                        </a>
+                    {% else %}
+                        <form action="{% url 'courses:enroll_course' course.identifier %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary w-100 premium-btn shadow-sm py-2fw-bold">
+                                🛒 Inscribirse Gratis
+                            </button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-warning small border-0 text-center mb-0" style="border-radius: 12px;">
+                        🔑 <a href="#" class="fw-bold text-warning-dominant text-decoration-none">Inicia sesión</a> para poder inscribirte y guardar tu progreso en este curso.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
