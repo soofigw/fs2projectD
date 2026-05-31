@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+.venv/
+env/
+
+# Variables de entorno secretas
+.env
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Base de datos local de desarrollo
+db.sqlite3
+
+# Carpetas de archivos subidos y estáticos locales
+media/
+staticfiles/
+
+# Configuraciones de VS Code
+.vscode/
