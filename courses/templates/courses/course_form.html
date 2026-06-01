@@ -9,13 +9,13 @@
             
             <div class="mb-4">
                 <a href="{% url 'courses:course_list' %}" class="text-decoration-none text-secondary fw-semibold small">
-                    ⬅️ Cancelar y volver al catálogo
+                    Cancelar y volver al catálogo
                 </a>
             </div>
 
             <div class="p-5 glass-card bg-white shadow-sm">
                 <h2 class="fw-bold text-dark mb-2">
-                    {% if form.instance.pk %}⚙️ Editar Curso{% else %}✨ Nuevo Curso{% endif %}
+                    {% if form.instance.pk %}⚙️ Editar Curso{% else %}Nuevo Curso{% endif %}
                 </h2>
                 <p class="text-secondary small mb-4">Ingresa la información requerida por el plan de estudios para dar de alta o modificar la materia.</p>
                 <hr class="text-muted mb-4">

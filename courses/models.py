@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.core.files.storage import default_storage
 from django.conf import settings
 
-# Helper para obtener el almacenamiento dinámico (Local o OCI Cloud)
+# Helper para obtener el almacenamiento dinamico (Local o OCI Cloud)
 def get_file_storage():
     if hasattr(settings, 'DEFAULT_FILE_STORAGE') and settings.DEFAULT_FILE_STORAGE:
         from django.utils.module_loading import import_string
@@ -15,7 +15,7 @@ def get_file_storage():
 
 
 # ==============================================================================
-# 1. MODELO DE USUARIO PERSONALIZADO (Exigido por Rúbrica)
+# 1. MODELO DE USUARIO PERSONALIZADO 
 # ==============================================================================
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
@@ -25,7 +25,7 @@ class CustomUser(AbstractUser):
 
 
 # ==============================================================================
-# 2. MODELO DE CATEGORÍA (Exigido por Rúbrica Opción D)
+# 2. MODELO DE CATEGORIA 
 # ==============================================================================
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -39,7 +39,7 @@ class Category(models.Model):
 
 
 # ==============================================================================
-# 3. MODELO DE CURSO (Adaptado a tu Rúbrica Opción D + Estructura Segura)
+# 3. MODELO DE CURSO 
 # ==============================================================================
 class Course(models.Model):
     LEVEL_CHOICES = [
@@ -63,7 +63,6 @@ class Course(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     
-    # Campos obligatorios exigidos por tu rúbrica (Opción D):
     duration = models.PositiveIntegerField(help_text="Duración aproximada en horas")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='principiante')
     video_url = models.URLField(blank=True, help_text="URL de video introductorio (YouTube/Vimeo)")
@@ -83,7 +82,7 @@ class Course(models.Model):
 
 
 # ==============================================================================
-# 4. MODELO DE LECCIÓN (Estructura Polimórfica Modular)
+# 4. MODELO DE LECCION (Estructura de contenido)
 # ==============================================================================
 class Lesson(models.Model):
     CONTENT_TYPES = [
@@ -119,7 +118,7 @@ class Lesson(models.Model):
 
 
 # ==============================================================================
-# 5. MODELO DE INSCRIPCIÓN (Relación Muchos a Muchos Alumno-Curso)
+# 5. MODELO DE INSCRIPCION (R Muchos a Muchos Alumno-Curso)
 # ==============================================================================
 class Enrollment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="enrollments")
@@ -135,7 +134,7 @@ class Enrollment(models.Model):
 
 
 # ==============================================================================
-# 6. MODELO DE SEGUIMIENTO DE PROGRESO (Tipo Udemy)
+# 6. MODELO DE SEGUIMIENTO DE PROGRESO
 # ==============================================================================
 class LessonProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

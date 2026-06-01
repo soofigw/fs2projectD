@@ -44,7 +44,7 @@ class LessonForm(StyledFormMixin, forms.ModelForm):
 class SignupForm(StyledFormMixin, UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ["first_name", "last_name", "email"]
+        fields = ["username","first_name", "last_name", "email"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

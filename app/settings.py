@@ -124,3 +124,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Direccionamiento de control de accesos
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'courses:course_list'
+LOGOUT_REDIRECT_URL = 'courses:course_list'
+
+AUTHENTICATION_BACKENDS = [
+    'courses.backends.EmailBackend',  # Nuestro nuevo backend para el correo
+    'django.contrib.auth.backends.ModelBackend',  # El de respaldo por defecto
+]

@@ -68,22 +68,22 @@
                 </ul>
                 
                 <div class="d-flex align-items-center gap-2">
-                    {% if user.is_authenticated %}
-                        <span class="navbar-text me-2 fw-semibold text-secondary">
-                            👋 Hola, <span class="text-dark">{{ user.username }}</span>
-                        </span>
-                        {% if user.is_staff or user.is_superuser %}
-                            <a href="{% url 'courses:course_create' %}" class="btn btn-outline-primary premium-btn btn-sm">Crear Curso</a>
-                        {% endif %}
-                        <form action="#" method="post" class="d-inline m-0">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-dark premium-btn btn-sm">Cerrar Sesión</button>
-                        </form>
-                    {% else %}
-                        <a href="#" class="btn btn-link text-decoration-none text-dark fw-semibold">Iniciar Sesión</a>
-                        <a href="#" class="btn btn-primary premium-btn btn-sm shadow-sm">Registrarse</a>
-                    {% endif %}
-                </div>
+    {% if user.is_authenticated %}
+        <span class="navbar-text me-2 fw-semibold text-secondary">
+            👋 Hola, <span class="text-dark">{{ user.username }}</span>
+        </span>
+        {% if user.is_staff or user.is_superuser %}
+            <a href="{% url 'courses:course_create' %}" class="btn btn-outline-primary premium-btn btn-sm">Crear Curso</a>
+        {% endif %}
+        <form action="{% url 'logout' %}" method="post" class="m-0">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark premium-btn btn-sm">Cerrar Sesión</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-link text-decoration-none text-dark fw-semibold">Iniciar Sesión</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary premium-btn btn-sm shadow-sm">Registrarse</a>
+    {% endif %}
+</div>
             </div>
         </div>
     </nav>

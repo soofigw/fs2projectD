@@ -7,7 +7,7 @@
     
     <div class="mb-4">
         <a href="{% url 'courses:course_detail' lesson.course.identifier %}" class="text-decoration-none text-secondary fw-semibold small">
-            ⬅️ Volver a la estructura del curso
+            Volver a la estructura del curso
         </a>
     </div>
 
@@ -67,7 +67,7 @@
             <div class="d-flex justify-content-between align-items-center mb-5">
                 {% if prev_lesson %}
                     <a href="{% url 'courses:lesson_detail' lesson.course.identifier prev_lesson.order %}" class="btn btn-outline-dark premium-btn shadow-xs px-4">
-                        ⬅️ Lección Anterior
+                        Lección Anterior
                     </a>
                 {% else %}
                     <button class="btn btn-outline-dark premium-btn px-4" disabled style="opacity: 0.4;">Anterior</button>
