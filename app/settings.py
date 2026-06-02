@@ -29,8 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -141,3 +140,6 @@ AUTHENTICATION_BACKENDS = [
     'courses.backends.EmailBackend',  # Nuestro nuevo backend para el correo
     'django.contrib.auth.backends.ModelBackend',  # El de respaldo por defecto
 ]
+
+# Password Reset
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
