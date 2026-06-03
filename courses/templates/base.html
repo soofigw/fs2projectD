@@ -69,20 +69,65 @@
                 
                 <div class="d-flex align-items-center gap-2">
     {% if user.is_authenticated %}
-        <span class="navbar-text me-2 fw-semibold text-secondary">
-            👋 Hola, <span class="text-dark">{{ user.username }}</span>
-        </span>
-        {% if user.is_staff or user.is_superuser %}
-            <a href="{% url 'courses:course_create' %}" class="btn btn-outline-primary premium-btn btn-sm">Crear Curso</a>
+
+        <div class="dropdown">
+
+            <button class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+
+                👋 Hola, {{ user.username }}
+
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                {% if user.is_staff or user.is_superuser %}
+                <li>
+                    <a class="dropdown-item"
+                    href="{% url 'courses:course_create' %}">
+                        📚 Crear Curso
+                    </a>
+                </li>
+                {% endif %}
+
+                <li>
+                    <a class="dropdown-item"
+                    href="{% url 'password_change' %}">
+                        🔒 Cambiar Contraseña
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <form action="{% url 'logout' %}" method="post" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="dropdown-item text-danger">
+                            🚪 Cerrar Sesión
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+
+        </div>
+
+        {% else %}
+
+        <a href="{% url 'login' %}"
+        class="btn btn-link text-decoration-none text-dark fw-semibold">
+            Iniciar Sesión
+        </a>
+
+        <a href="{% url 'signup' %}"
+        class="btn btn-primary premium-btn btn-sm shadow-sm">
+            Registrarse
+        </a>
+
         {% endif %}
-        <form action="{% url 'logout' %}" method="post" class="m-0">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-dark premium-btn btn-sm">Cerrar Sesión</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}" class="btn btn-link text-decoration-none text-dark fw-semibold">Iniciar Sesión</a>
-        <a href="{% url 'signup' %}" class="btn btn-primary premium-btn btn-sm shadow-sm">Registrarse</a>
-    {% endif %}
 </div>
             </div>
         </div>
