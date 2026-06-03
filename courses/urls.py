@@ -13,6 +13,7 @@ urlpatterns = [
     # CRUD de Cursos para instructores
     path("course/create/", views.CourseCreateView.as_view(), name="course_create"),
     path("course/<uuid:identifier>/edit/", views.CourseUpdateView.as_view(), name="course_update"),
+    path("course/<uuid:identifier>/delete/", views.CourseDeleteView.as_view(), name="course_delete"),
     
     # Lecciones individuales
     path("course/<uuid:course_id>/lesson/<int:order>/", views.LessonDetailView.as_view(), name="lesson_detail"),

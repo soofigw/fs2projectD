@@ -7,7 +7,6 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from courses.forms import SignupForm, EmailLoginForm
-from django.contrib.auth import views as auth_views
 
 class CustomSignupView(CreateView):
     form_class = SignupForm

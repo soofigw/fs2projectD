@@ -53,11 +53,16 @@ class CourseDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         course = self.get_object()
         user = self.request.user
-        
+
+
+        is_instructor = (
+            user.is_authenticated and
+            course.instructor == user
+        )
         is_enrolled = False
         progress_pct = 0
 
-        if user.is_authenticated:
+        if user.is_authenticated and not is_instructor:
             is_enrolled = Enrollment.objects.filter(user=user, course=course).exists()
             if is_enrolled:
                 # Calcula el porcentaje matemático de progreso del alumno
@@ -71,6 +76,7 @@ class CourseDetailView(DetailView):
         context["is_enrolled"] = is_enrolled
         context["progress_percentage"] = progress_pct
         context["lessons"] = course.lessons.all()
+        context["is_instructor"] = is_instructor
         return context
 
 
@@ -102,6 +108,21 @@ class CourseUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         messages.success(self.request, "¡Curso actualizado con éxito!")
         return super().form_valid(form)
 
+class CourseDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """Permite eliminar un curso (CRUD - Eliminar)"""
+    model = Course
+    template_name = "courses/course_confirm_delete.html"
+    slug_field = "identifier"
+    slug_url_kwarg = "identifier"
+    success_url = reverse_lazy("courses:course_list")
+
+    def test_func(self):
+        # Solo el instructor dueño del curso puede eliminarlo
+        return self.get_object().instructor == self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "¡Curso eliminado correctamente!")
+        return super().delete(request, *args, **kwargs)
 
 # ==============================================================================
 # SISTEMA DE INSCRIPCIÓN AUTOMÁTICA

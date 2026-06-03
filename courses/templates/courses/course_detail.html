@@ -91,7 +91,20 @@
                 </div>
 
                 {% if user.is_authenticated %}
-                    {% if is_enrolled %}
+                {% if is_instructor %}
+                <div class="d-grid gap-2">
+
+                    <a href="{% url 'courses:course_update' course.identifier %}"
+                    class="btn btn-warning">
+                        ✏️ Editar Curso
+                    </a>
+
+                    <a href="{% url 'courses:course_delete' course.identifier %}"
+                    class="btn btn-danger">
+                        🗑️ Eliminar Curso
+                    </a>
+                </div>
+                    {% elif is_enrolled %}
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="small fw-bold text-dark">Tu progreso actual</span>
@@ -101,17 +114,22 @@
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: {{ progress_percentage }}%" aria-valuenow="{{ progress_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
-                        <a href="{% url 'courses:lesson_detail' course.identifier 1 %}" class="btn btn-dark w-100 premium-btn shadow-sm py-2">
-                            🚀 Continuar Aprendiendo
-                        </a>
+                        {% if lessons %}
+                            <a href="{% url 'courses:lesson_detail' course.identifier lessons.first.order %}"
+                            class="btn btn-dark w-100 premium-btn shadow-sm py-2">
+                                🚀 Continuar Aprendiendo
+                            </a>
+                            {% endif %}
                     {% else %}
                         <form action="{% url 'courses:enroll_course' course.identifier %}" method="post" class="m-0">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary w-100 premium-btn shadow-sm py-2fw-bold">
+                            <button type="submit" class="btn btn-primary w-100 premium-btn shadow-sm py-2 fw-bold">
                                 🛒 Inscribirse Gratis
                             </button>
                         </form>
                     {% endif %}
+
+
                 {% else %}
                     <div class="alert alert-warning small border-0 text-center mb-0" style="border-radius: 12px;">
                         <a href="#" class="fw-bold text-warning-dominant text-decoration-none">Inicia sesión</a> para poder inscribirte y guardar tu progreso en este curso.
