@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse, Http404
 import json
-from django.db.models import F
+from django.db.models import F, Max 
 
 from .models import Course, Lesson, Enrollment, LessonProgress, Category, Lesson
 from .forms import CourseForm, LessonForm
@@ -247,11 +247,14 @@ class LessonCreateView(LoginRequiredMixin, CreateView):
         form.instance.course = self.course
 
         ultimo_orden = (
-            Lesson.objects.filter(course=self.course)
-            .count()
+            Lesson.objects
+            .filter(course=self.course)
+            .aggregate(Max("order"))
         )
 
-        form.instance.order = ultimo_orden + 1
+        form.instance.order = (
+            ultimo_orden["order__max"] or 0
+        ) + 1
 
         return super().form_valid(form)
 
@@ -314,6 +317,24 @@ class LessonDeleteView(LoginRequiredMixin, DeleteView):
 
     template_name = "courses/lesson_confirm_delete.html"
 
+    def form_valid(self, form):
+
+        lesson = self.object
+
+        course = lesson.course
+        deleted_order = lesson.order
+
+        response = super().form_valid(form)
+
+        Lesson.objects.filter(
+            course=course,
+            order__gt=deleted_order
+        ).update(
+            order=F("order") - 1
+        )
+
+        return response
+
     def dispatch(self, request, *args, **kwargs):
 
         lesson = self.get_object()
@@ -325,22 +346,6 @@ class LessonDeleteView(LoginRequiredMixin, DeleteView):
             )
 
         return super().dispatch(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-
-        lesson = self.get_object()
-
-        course = lesson.course
-        deleted_order = lesson.order
-
-        response = super().delete(request, *args, **kwargs)
-
-        Lesson.objects.filter(
-            course=course,
-            order__gt=deleted_order
-        ).update(order=F("order") - 1)
-
-        return response
 
     def get_success_url(self):
 
