@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Curso{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <div class="glass-card p-5">
+
+                <h2 class="text-danger fw-bold mb-3">
+                    Eliminar Curso
+                </h2>
+
+                <p class="lead">
+                    ¿Estás seguro de que deseas eliminar este curso?
+                </p>
+
+                <div class="alert alert-warning">
+                    <strong>{{ object.title }}</strong>
+                    <br>
+                    Esta acción no se puede deshacer.
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="btn btn-danger premium-btn">
+                        Sí, eliminar curso
+                    </button>
+
+                    <a href="{{ object.get_absolute_url }}"
+                       class="btn btn-secondary premium-btn">
+                        Cancelar
+                    </a>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
