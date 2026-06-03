@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from .models import Course, Lesson
 
 class StyledFormMixin:
@@ -58,3 +58,33 @@ class EmailLoginForm(StyledFormMixin, AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.fields["username"].label = "Correo electrónico"
         self._style_fields()
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "form-control",
+            })
+
+class CustomPasswordResetForm(PasswordResetForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["email"].widget.attrs.update({
+            "class": "form-control form-control",
+            "placeholder": "correo@ejemplo.com"
+        })
+
+class CustomSetPasswordForm(SetPasswordForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "form-control form-control"
+            })

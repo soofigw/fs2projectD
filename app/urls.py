@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from courses.forms import SignupForm, EmailLoginForm
+from courses.forms import SignupForm, EmailLoginForm, CustomPasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm
 
 class CustomSignupView(CreateView):
     form_class = SignupForm
@@ -24,17 +24,38 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(authentication_form=EmailLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='courses:course_list'), name='logout'),
     path('signup/', CustomSignupView.as_view(), name='signup'),
+
+    path(
+    'password-change/',
+        auth_views.PasswordChangeView.as_view(
+            form_class=CustomPasswordChangeForm,
+            template_name='registration/password_change_form.html'
+        ),
+        name='password_change'
+    ),
+
+    path(
+        'password-change/done/',
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name='registration/password_change_done.html'
+        ),
+        name='password_change_done'
+    ),
     
     # path de la app de cursos
     path('', include('courses.urls', namespace='courses')),
 
     path(
-    'password-reset/',
-    auth_views.PasswordResetView.as_view(
-        template_name='registration/password_reset_form.html'
+        'password-reset/',
+        auth_views.PasswordResetView.as_view(
+            form_class=CustomPasswordResetForm,
+            template_name='registration/password_reset_form.html',
+            email_template_name='registration/password_reset_email.html',
+            subject_template_name='registration/password_reset_subject.txt'
+        ),
+        name='password_reset'
     ),
-    name='password_reset'
-    ),
+
 
     path(
         'password-reset/done/',
@@ -47,6 +68,7 @@ urlpatterns = [
     path(
         'reset/<uidb64>/<token>/',
         auth_views.PasswordResetConfirmView.as_view(
+            form_class=CustomSetPasswordForm,
             template_name='registration/password_reset_confirm.html'
         ),
         name='password_reset_confirm'
