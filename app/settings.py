@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites', 
     'storages', 
-    'django_extensions',
     'courses',
 ]
 
