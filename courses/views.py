@@ -1,13 +1,14 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse, Http404
 import json
+from django.db.models import F
 
-from .models import Course, Lesson, Enrollment, LessonProgress, Category
+from .models import Course, Lesson, Enrollment, LessonProgress, Category, Lesson
 from .forms import CourseForm, LessonForm
 
 # ==============================================================================
@@ -207,3 +208,145 @@ class ToggleLessonCompleteView(LoginRequiredMixin, View):
             "course_id": lesson.course.identifier,
             "order": lesson.order
         }))
+    
+class LessonCreateView(LoginRequiredMixin, CreateView):
+    model = Lesson
+    fields = [
+        "title",
+        "content_type",
+        "text_content",
+        "video_url",
+        "attachment"
+    ]
+
+    template_name = "courses/lesson_form.html"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        for field in form.fields:
+            form.fields[field].widget.attrs.update({
+                "class": "form-control"
+            })
+
+        return form
+
+    def dispatch(self, request, *args, **kwargs):
+        self.course = get_object_or_404(
+            Course,
+            identifier=self.kwargs["identifier"]
+        )
+
+        if self.course.instructor != request.user:
+            return redirect("courses:course_detail",
+                            identifier=self.course.identifier)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.course = self.course
+
+        ultimo_orden = (
+            Lesson.objects.filter(course=self.course)
+            .count()
+        )
+
+        form.instance.order = ultimo_orden + 1
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "courses:course_detail",
+            kwargs={"identifier": self.course.identifier}
+        )
+    
+class LessonUpdateView(LoginRequiredMixin, UpdateView):
+
+    model = Lesson
+
+    fields = [
+        "title",
+        "content_type",
+        "text_content",
+        "video_url",
+        "attachment"
+    ]
+
+    template_name = "courses/lesson_form.html"
+
+    def get_form(self, form_class=None):
+
+        form = super().get_form(form_class)
+
+        for field in form.fields:
+            form.fields[field].widget.attrs.update({
+                "class": "form-control"
+            })
+
+        return form
+
+    def dispatch(self, request, *args, **kwargs):
+
+        lesson = self.get_object()
+
+        if lesson.course.instructor != request.user:
+            return redirect(
+                "courses:course_detail",
+                identifier=lesson.course.identifier
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+
+        return reverse(
+            "courses:course_detail",
+            kwargs={
+                "identifier": self.object.course.identifier
+            }
+        )
+
+
+class LessonDeleteView(LoginRequiredMixin, DeleteView):
+
+    model = Lesson
+
+    template_name = "courses/lesson_confirm_delete.html"
+
+    def dispatch(self, request, *args, **kwargs):
+
+        lesson = self.get_object()
+
+        if lesson.course.instructor != request.user:
+            return redirect(
+                "courses:course_detail",
+                identifier=lesson.course.identifier
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+
+        lesson = self.get_object()
+
+        course = lesson.course
+        deleted_order = lesson.order
+
+        response = super().delete(request, *args, **kwargs)
+
+        Lesson.objects.filter(
+            course=course,
+            order__gt=deleted_order
+        ).update(order=F("order") - 1)
+
+        return response
+
+    def get_success_url(self):
+
+        return reverse(
+            "courses:course_detail",
+            kwargs={
+                "identifier": self.object.course.identifier
+            }
+        )

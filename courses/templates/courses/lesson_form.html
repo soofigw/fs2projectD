@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Lección{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg">
+
+                <div class="card-body p-5">
+
+                    {% if object %}
+                        <h2 class="fw-bold mb-2">
+                            ✏️ Editar Lección
+                        </h2>
+
+                        <p class="text-muted mb-4">
+                            Modifica el contenido de esta lección.
+                        </p>
+                    {% else %}
+                        <h2 class="fw-bold mb-2">
+                            ➕ Nueva Lección
+                        </h2>
+
+                        <p class="text-muted mb-4">
+                            Agrega contenido a tu curso.
+                        </p>
+                    {% endif %}
+
+                    <hr class="mb-4">
+
+                    <form method="post"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Título
+                            </label>
+
+                            {{ form.title }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Tipo de contenido
+                            </label>
+
+                            {{ form.content_type }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Contenido de texto
+                            </label>
+
+                            {{ form.text_content }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                URL de video
+                            </label>
+
+                            {{ form.video_url }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Archivo adjunto
+                            </label>
+
+                            {{ form.attachment }}
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-5">
+                            Guardar Lección
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

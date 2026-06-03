@@ -23,5 +23,9 @@ services:
     depends_on:
       - db
 
+    volumes:
+      - .:/app
+      - ./media:/app/media
+
 volumes:
   postgres_data:

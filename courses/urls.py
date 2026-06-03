@@ -18,4 +18,7 @@ urlpatterns = [
     # Lecciones individuales
     path("course/<uuid:course_id>/lesson/<int:order>/", views.LessonDetailView.as_view(), name="lesson_detail"),
     path("lesson/<int:lesson_id>/toggle-complete/", views.ToggleLessonCompleteView.as_view(), name="toggle_complete"),
+    path("course/<uuid:identifier>/lesson/create/", views.LessonCreateView.as_view(), name="lesson_create"),
+    path("lesson/<int:pk>/edit/", views.LessonUpdateView.as_view(), name="lesson_update"),
+    path("lesson/<int:pk>/delete/", views.LessonDeleteView.as_view(), name="lesson_delete"),
 ]

@@ -23,25 +23,207 @@
                 </div>
                 <h2 class="fw-bold text-dark mb-4">{{ lesson.title }}</h2>
 
-                <div class="bg-dark text-white rounded-3 overflow-hidden mb-4 shadow-inner d-flex align-items-center justify-content-center" style="min-height: 400px; background: #0f172a;">
-                    {% if lesson.content_type == 'video' and lesson.video_url %}
-                        <div class="text-center p-5">
-                            <span style="font-size: 4rem;">📺</span>
-                            <h4 class="fw-bold mt-3">Visualizador de Video Activo</h4>
-                            <p class="text-secondary small mb-3">Esta lección consume un stream externo seguro.</p>
-                            <a href="{{ lesson.video_url }}" target="_blank" class="btn btn-sm btn-primary premium-btn px-4">Ver Video en pestaña externa ↗️</a>
-                        </div>
-                    {% elif lesson.content_type == 'image' and lesson.attachment %}
-                        <img src="{{ lesson.attachment.url }}" alt="{{ lesson.title }}" class="img-fluid" style="max-height: 500px; object-fit: contain;">
-                    {% else %}
-                        <div class="text-center p-5">
-                            <span style="font-size: 4rem;">📄</span>
-                            <h4 class="fw-bold mt-3">Módulo de Lectura Avanzada</h4>
-                            <p class="text-secondary small">Revisa el contenido textual o descarga los recursos en la sección inferior.</p>
-                        </div>
-                    {% endif %}
-                </div>
+                <div class="mb-4">
 
+                    {% if lesson.content_type == 'video' and lesson.video_url %}
+
+                        <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
+                            <iframe
+                                src="{{ lesson.video_url }}"
+                                title="{{ lesson.title }}"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                    {% elif lesson.attachment %}
+
+                        {% with file=lesson.attachment.url|lower %}
+
+                            {% if ".pdf" in file %}
+
+                                <div class="card border-0 shadow-sm">
+
+                                    <div class="card-header bg-white">
+                                        <h5 class="fw-bold mb-0">
+                                            📄 Documento PDF
+                                        </h5>
+                                    </div>
+
+                                    <div class="card-body p-0">
+
+                                        <iframe
+                                            src="{{ lesson.attachment.url }}"
+                                            width="100%"
+                                            height="900"
+                                            style="border:none;">
+                                        </iframe>
+
+                                    </div>
+
+                                </div>
+
+                            {% elif ".jpg" in file or ".jpeg" in file or ".png" in file or ".webp" in file or ".gif" in file %}
+
+                                <div class="card border-0 shadow-sm">
+
+                                    <div class="card-header bg-white">
+                                        <h5 class="fw-bold mb-0">
+                                            🖼️ Imagen de la Lección
+                                        </h5>
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <div
+                                            class="border rounded bg-light"
+                                            style="
+                                                max-height:700px;
+                                                overflow:auto;
+                                                padding:15px;
+                                                text-align:center;
+                                            ">
+
+                                            <img
+                                                src="{{ lesson.attachment.url }}"
+                                                alt="{{ lesson.title }}"
+                                                style="
+                                                    max-width:none;
+                                                    height:auto;
+                                                ">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="card-footer bg-white text-center">
+
+                                        <a
+                                            href="{{ lesson.attachment.url }}"
+                                            download
+                                            class="btn btn-primary">
+
+                                            Descargar Imagen
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            {% elif ".doc" in file or ".docx" in file or ".xls" in file or ".xlsx" in file or ".ppt" in file or ".pptx" in file %}
+
+                                <div class="card border-0 shadow-sm">
+
+                                    <div class="card-body text-center p-5">
+
+                                        <div style="font-size:5rem;">
+                                            📊
+                                        </div>
+
+                                        <h3 class="fw-bold mt-3">
+                                            Documento Disponible
+                                        </h3>
+
+                                        <p class="text-muted">
+                                            Este tipo de archivo no puede visualizarse directamente en el navegador.
+                                        </p>
+
+                                        <p class="text-muted small">
+                                            Descárgalo para abrirlo en Excel, Word o PowerPoint.
+                                        </p>
+
+                                        <a
+                                            href="{{ lesson.attachment.url }}"
+                                            download
+                                            class="btn btn-primary premium-btn">
+
+                                            ⬇️ Descargar Documento
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="card border-0 shadow-sm">
+
+                                    <div class="card-body text-center p-5">
+
+                                        <div style="font-size:5rem;">
+                                            📁
+                                        </div>
+
+                                        <h3 class="fw-bold mt-3">
+                                            Archivo Disponible
+                                        </h3>
+
+                                        <p class="text-muted">
+                                            Recurso compartido por el instructor.
+                                        </p>
+
+                                        <a
+                                            href="{{ lesson.attachment.url }}"
+                                            download
+                                            class="btn btn-primary premium-btn">
+
+                                            ⬇️ Descargar Archivo
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% endwith %}
+
+                    {% elif lesson.text_content %}
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-header bg-white">
+                                <h5 class="fw-bold mb-0">
+                                    📖 Material de Estudio
+                                </h5>
+                            </div>
+
+                            <div class="card-body p-4">
+
+                                <div
+                                    style="
+                                        white-space: pre-line;
+                                        line-height: 1.9;
+                                        font-size: 1.05rem;
+                                    ">
+
+                                    {{ lesson.text_content }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="bg-dark text-white rounded-3 p-5 text-center shadow-sm">
+
+                            <span style="font-size:4rem;">
+                                📄
+                            </span>
+
+                            <h4 class="fw-bold mt-3">
+                                Contenido no disponible
+                            </h4>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
                 {% if lesson.text_content %}
                     <div class="p-3 bg-light rounded-3 border">
                         <h5 class="fw-bold text-dark mb-2">Notas de Estudio:</h5>

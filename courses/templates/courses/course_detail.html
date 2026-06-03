@@ -47,11 +47,30 @@
                                     {{ lesson.order }}
                                 </span>
                                 <div>
-                                    <h5 class="fw-semibold m-0 text-dark">{{ lesson.title }}</h5>
-                                    <span class="badge bg-light text-secondary border px-2 py-1 mt-1 small text-uppercase" style="font-size: 0.75rem;">
-                                        📦 {{ lesson.get_content_type_display }}
-                                    </span>
+                                <h5 class="fw-semibold m-0 text-dark">
+                                    {{ lesson.title }}
+                                </h5>
+
+                                <span class="badge bg-light text-secondary border px-2 py-1 mt-1 small text-uppercase">
+                                    📦 {{ lesson.get_content_type_display }}
+                                </span>
+
+                                {% if is_instructor %}
+                                <div class="mt-2">
+
+                                    <a href="{% url 'courses:lesson_update' lesson.id %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                        ✏️ Editar
+                                    </a>
+
+                                    <a href="{% url 'courses:lesson_delete' lesson.id %}"
+                                    class="btn btn-sm btn-outline-danger">
+                                        🗑️ Eliminar
+                                    </a>
+
                                 </div>
+                                {% endif %}
+                            </div>
                             </div>
                             
                             {% if is_enrolled %}
@@ -97,6 +116,11 @@
                     <a href="{% url 'courses:course_update' course.identifier %}"
                     class="btn btn-warning">
                         ✏️ Editar Curso
+                    </a>
+
+                    <a href="{% url 'courses:lesson_create' course.identifier %}"
+                    class="btn btn-success">
+                        ➕ Agregar Lección
                     </a>
 
                     <a href="{% url 'courses:course_delete' course.identifier %}"
