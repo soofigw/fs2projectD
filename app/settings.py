@@ -167,5 +167,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 
-DEFAULT_FROM_EMAIL = "danielaaldaco9@gmail.com"
-SERVER_EMAIL = "danielaaldaco9@gmail.com"
+DEFAULT_FROM_EMAIL = "CloudClass <danielaaldaco9@gmail.com>"
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
