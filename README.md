@@ -133,7 +133,7 @@ cd fs2projectD
 docker compose up -d --build
 docker compose exec web python manage.py migrate
 
-La app queda en http://<IP_PUBLICA>:8000
+La app queda en http://132.145.136.110:8000
 
 ## Tests
 
