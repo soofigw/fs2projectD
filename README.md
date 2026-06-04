@@ -114,6 +114,27 @@ docker compose up --build
 
 La app queda en http://localhost:8000
 
+## Ejecutar en OCI (Compute + Docker)
+
+1) Crear una instancia en OCI y abrir el puerto 8000 en el NSG o Security List.
+2) Instalar Docker y Docker Compose en la VM.
+3) Clonar el repositorio y crear el archivo .env.
+4) Levantar los contenedores.
+
+Comandos (ejemplo en Ubuntu/Debian):
+
+sudo apt-get update
+sudo apt-get install -y docker.io docker-compose-plugin
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+
+git clone <repo>
+cd fs2projectD
+docker compose up -d --build
+docker compose exec web python manage.py migrate
+
+La app queda en http://<IP_PUBLICA>:8000
+
 ## Tests
 
 python manage.py test
