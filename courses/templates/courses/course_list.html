@@ -4,33 +4,39 @@
 
 {% block content %}
 <div class="container">
-    
-    <div class="p-5 mb-4 glass-card text-center text-md-start">
-        <div class="row align-items-center">
+
+    <div class="p-4 p-md-5 mb-4 glass-card page-hero text-center text-md-start">
+        <div class="row align-items-center position-relative">
             <div class="col-md-8">
-                <span class="badge bg-primary-subtle text-primary fw-bold text-uppercase mb-2 px-3 py-2" style="border-radius: 20px;">Plataforma de Aprendizaje</span>
-                <h1 class="display-4 fw-bold text-dark mb-2">Descubre tu Próximo Desafío</h1>
-                <p class="fs-5 text-secondary">Aprende tecnologías Fullstack con lecciones modulares y seguimiento de progreso en tiempo real.</p>
+                <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold text-uppercase mb-3 px-3 py-2">
+                    <i class="bi bi-stars me-1"></i>Plataforma de Aprendizaje
+                </span>
+                <h1 class="display-5 fw-bold mb-2">Descubre tu Próximo Desafío</h1>
+                <p class="fs-5 text-body-secondary mb-0">Aprende tecnologías Fullstack con lecciones modulares y seguimiento de progreso en tiempo real.</p>
             </div>
             <div class="col-md-4 text-center d-none d-md-block">
-                <span style="font-size: 5rem;">🚀</span>
+                <div class="display-1 opacity-75"><i class="bi bi-rocket-takeoff text-primary"></i></div>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
         <div class="col-lg-3">
-            <div class="p-4 glass-card shadow-sm position-sticky" style="top: 90px;">
-                <h5 class="fw-bold mb-3">Filtrar Contenido</h5>
-                
+            <div class="p-4 glass-card sidebar-panel shadow-sm position-sticky" style="top: 90px;">
+                <h5 class="fw-bold mb-1"><i class="bi bi-funnel me-2 text-primary"></i>Filtrar Contenido</h5>
+                <p class="text-body-secondary small mb-3">Refina tu búsqueda por categoría o nivel.</p>
+
                 <form method="get" action="{% url 'courses:course_list' %}">
                     <div class="mb-3">
-                        <label for="search" class="form-label fw-semibold small text-secondary">Buscar palabra clave</label>
-                        <input type="text" name="q" id="search" class="form-control" placeholder="Ej. Django, Python..." value="{{ request.GET.q }}">
+                        <label for="search" class="form-label fw-semibold small text-body-secondary">Buscar palabra clave</label>
+                        <div class="input-group">
+                            <span class="input-group-text border-end-0 bg-transparent"><i class="bi bi-search"></i></span>
+                            <input type="text" name="q" id="search" class="form-control border-start-0" placeholder="Ej. Django, Python..." value="{{ request.GET.q }}">
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="category" class="form-label fw-semibold small text-secondary">Categoría</label>
+                        <label for="category" class="form-label fw-semibold small text-body-secondary">Categoría</label>
                         <select name="category" id="category" class="form-select">
                             <option value="">Todas las categorías</option>
                             {% for cat in categories %}
@@ -40,7 +46,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="level" class="form-label fw-semibold small text-secondary">Nivel del Curso</label>
+                        <label for="level" class="form-label fw-semibold small text-body-secondary">Nivel del Curso</label>
                         <select name="level" id="level" class="form-select">
                             <option value="">Todos los niveles</option>
                             <option value="principiante" {% if request.GET.level == 'principiante' %}selected{% endif %}>Principiante</option>
@@ -49,46 +55,55 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 premium-btn shadow-sm">Aplicar Filtros</button>
+                    <button type="submit" class="btn btn-primary w-100 premium-btn shadow-sm">
+                        <i class="bi bi-check2-circle me-1"></i>Aplicar Filtros
+                    </button>
                     {% if request.GET.q or request.GET.category or request.GET.level %}
-                        <a href="{% url 'courses:course_list' %}" class="btn btn-light w-100 premium-btn mt-2 border text-secondary small">Limpiar Filtros</a>
+                        <a href="{% url 'courses:course_list' %}" class="btn btn-outline-secondary w-100 premium-btn mt-2 small">
+                            <i class="bi bi-x-circle me-1"></i>Limpiar Filtros
+                        </a>
                     {% endif %}
                 </form>
             </div>
         </div>
 
         <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="fw-bold m-0 text-dark">Programas Disponibles</h3>
-                <span class="badge bg-dark px-3 py-2 fw-semibold" style="border-radius: 10px;">{{ courses|length }} cursos encontrados</span>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                <h3 class="fw-bold m-0">Programas Disponibles</h3>
+                <span class="badge bg-primary rounded-pill px-3 py-2 fw-semibold">
+                    <i class="bi bi-collection me-1"></i>{{ courses|length }} cursos encontrados
+                </span>
             </div>
 
             {% if courses %}
                 <div class="row row-cols-1 row-cols-md-2 g-4">
                     {% for course in courses %}
                         <div class="col">
-                            <div class="card h-100 glass-card border-0 transition-all hover-shadow">
-                                <div class="card-body p-4 d-flex flex-direction-column justify-content-between" style="display: flex; flex-direction: column;">
+                            <div class="card h-100 glass-card course-card border-0 hover-lift">
+                                <div class="card-accent"></div>
+                                <div class="card-body p-4 d-flex flex-column">
                                     <div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2 py-1" style="border-radius: 6px;">
+                                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                            <span class="badge bg-secondary-subtle text-secondary fw-semibold rounded-2">
                                                 {{ course.category.name }}
                                             </span>
-                                            <span class="badge {% if course.level == 'principiante' %}bg-success-subtle text-success{% elif course.level == 'intermedio' %}bg-warning-subtle text-warning-dominant{% else %}bg-danger-subtle text-danger{% endif %} fw-bold px-2 py-1 text-uppercase small" style="border-radius: 6px;">
+                                            <span class="badge {% if course.level == 'principiante' %}bg-success-subtle text-success{% elif course.level == 'intermedio' %}bg-warning-subtle text-warning{% else %}bg-danger-subtle text-danger{% endif %} fw-bold text-uppercase small rounded-2">
                                                 {{ course.get_level_display }}
                                             </span>
                                         </div>
 
-                                        <h4 class="card-title fw-bold text-dark mb-2">{{ course.title }}</h4>
-                                        <p class="card-text text-secondary text-truncate-3 small mb-4">{{ course.description }}</p>
+                                        <h4 class="card-title fw-bold mb-2">{{ course.title }}</h4>
+                                        <p class="card-text text-body-secondary small mb-4" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{{ course.description }}</p>
                                     </div>
 
                                     <div class="border-top pt-3 mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
-                                            <span>⏱️ <strong>{{ course.duration }} horas</strong> de contenido</span>
-                                            <span>👨‍🏫Instructor {{ course.instructor.username }}</span>
+                                        <div class="d-flex justify-content-between align-items-center text-body-secondary small mb-3 flex-wrap gap-2">
+                                            <span><i class="bi bi-clock me-1"></i><strong>{{ course.duration }} horas</strong></span>
+                                            <span><i class="bi bi-person-workspace me-1"></i>{{ course.instructor.username }}</span>
                                         </div>
-                                        <a href="{{ course.get_absolute_url }}" class="btn btn-outline-primary w-100 premium-btn shadow-xs">Ver estructura</a>
+                                        <a href="{{ course.get_absolute_url }}" class="btn btn-outline-primary w-100 premium-btn">
+                                            <i class="bi bi-journal-text me-1"></i>Ver estructura
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -96,10 +111,10 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="p-5 glass-card text-center border-2 border-dashed">
-                    <span style="font-size: 3.5rem;">🔍</span>
-                    <h4 class="fw-bold text-dark mt-3">No encontramos cursos</h4>
-                    <p class="text-secondary mb-0">Intenta cambiando las palabras clave o restableciendo los filtros de búsqueda de la barra lateral.</p>
+                <div class="p-5 glass-card empty-state text-center">
+                    <div class="display-4 text-body-secondary mb-3"><i class="bi bi-search"></i></div>
+                    <h4 class="fw-bold">No encontramos cursos</h4>
+                    <p class="text-body-secondary mb-0">Intenta cambiando las palabras clave o restableciendo los filtros de búsqueda de la barra lateral.</p>
                 </div>
             {% endif %}
         </div>

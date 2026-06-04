@@ -2,38 +2,42 @@
 
 {% block content %}
 
-<div class="container py-5">
+<div class="container py-4">
 
     <div class="row justify-content-center">
 
         <div class="col-lg-6">
 
-            <div class="card shadow border-0">
+            <div class="glass-card border border-danger border-opacity-25 shadow-sm">
 
-                <div class="card-body p-5 text-center">
+                <div class="card-body p-4 p-md-5 text-center">
+
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger-subtle text-danger mb-3" style="width: 4rem; height: 4rem;">
+                        <i class="bi bi-trash fs-2"></i>
+                    </div>
 
                     <h2 class="fw-bold text-danger mb-3">
-                        🗑️ Eliminar Lección
+                        Eliminar Lección
                     </h2>
 
-                    <p class="text-muted">
+                    <p class="text-body-secondary mb-4">
                         ¿Seguro que deseas eliminar la lección
-                        <strong>{{ object.title }}</strong>?
+                        <strong class="text-body-emphasis">{{ object.title }}</strong>?
                     </p>
 
-                    <form method="post">
+                    <form method="post" class="d-flex flex-wrap gap-2 justify-content-center">
 
                         {% csrf_token %}
 
                         <button
                             type="submit"
-                            class="btn btn-danger">
-                            Eliminar
+                            class="btn btn-danger premium-btn">
+                            <i class="bi bi-trash me-1"></i>Eliminar
                         </button>
 
                         <a href="{% url 'courses:course_detail' object.course.identifier %}"
-                           class="btn btn-secondary">
-                            Cancelar
+                           class="btn btn-outline-secondary premium-btn">
+                            <i class="bi bi-x-lg me-1"></i>Cancelar
                         </a>
 
                     </form>

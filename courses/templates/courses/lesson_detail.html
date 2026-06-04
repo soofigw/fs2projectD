@@ -3,31 +3,33 @@
 {% block title %}{{ lesson.title }} - Udemy Lite{% endblock %}
 
 {% block content %}
-<div class="container-fluid px-md-5">
-    
-    <div class="mb-4">
-        <a href="{% url 'courses:course_detail' lesson.course.identifier %}" class="text-decoration-none text-secondary fw-semibold small">
-            Volver a la estructura del curso
+<div class="container-fluid px-md-4 px-lg-5">
+
+    <nav class="mb-4">
+        <a href="{% url 'courses:course_detail' lesson.course.identifier %}" class="breadcrumb-link text-decoration-none fw-semibold small">
+            <i class="bi bi-arrow-left me-1"></i>Volver a la estructura del curso
         </a>
-    </div>
+    </nav>
 
     <div class="row g-4">
         <div class="col-xl-8 col-lg-7">
-            <div class="p-4 glass-card bg-white mb-4 shadow-sm">
-                
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="badge bg-primary px-3 py-2 fw-bold" style="border-radius: 6px;">
-                        Lección {{ lesson.order }}
+            <div class="p-4 glass-card mb-4 shadow-sm">
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                    <span class="badge bg-primary rounded-2 px-3 py-2 fw-bold">
+                        <i class="bi bi-bookmark me-1"></i>Lección {{ lesson.order }}
                     </span>
-                    <span class="text-muted small fw-medium">Tipo: {{ lesson.get_content_type_display }}</span>
+                    <span class="text-body-secondary small fw-medium">
+                        <i class="bi bi-tag me-1"></i>{{ lesson.get_content_type_display }}
+                    </span>
                 </div>
-                <h2 class="fw-bold text-dark mb-4">{{ lesson.title }}</h2>
+                <h2 class="fw-bold mb-4">{{ lesson.title }}</h2>
 
                 <div class="mb-4">
 
                     {% if lesson.content_type == 'video' and lesson.video_url %}
 
-                        <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
+                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm border">
                             <iframe
                                 src="{{ lesson.video_url }}"
                                 title="{{ lesson.title }}"
@@ -41,11 +43,11 @@
 
                             {% if ".pdf" in file %}
 
-                                <div class="card border-0 shadow-sm">
+                                <div class="card glass-card border-0 shadow-sm overflow-hidden">
 
-                                    <div class="card-header bg-white">
+                                    <div class="card-header border-bottom">
                                         <h5 class="fw-bold mb-0">
-                                            📄 Documento PDF
+                                            <i class="bi bi-file-pdf text-danger me-2"></i>Documento PDF
                                         </h5>
                                     </div>
 
@@ -69,18 +71,18 @@
 
                             {% elif ".jpg" in file or ".jpeg" in file or ".png" in file or ".webp" in file or ".gif" in file %}
 
-                                <div class="card border-0 shadow-sm">
+                                <div class="card glass-card border-0 shadow-sm overflow-hidden">
 
-                                    <div class="card-header bg-white">
+                                    <div class="card-header border-bottom">
                                         <h5 class="fw-bold mb-0">
-                                            🖼️ Imagen de la Lección
+                                            <i class="bi bi-image text-primary me-2"></i>Imagen de la Lección
                                         </h5>
                                     </div>
 
                                     <div class="card-body">
 
                                         <div
-                                            class="border rounded bg-light"
+                                            class="border rounded-3 bg-body-secondary"
                                             style="
                                                 max-height:700px;
                                                 overflow:auto;
@@ -91,6 +93,7 @@
                                             <img
                                                 src="{{ lesson.attachment.url }}"
                                                 alt="{{ lesson.title }}"
+                                                class="img-fluid rounded-2"
                                                 style="
                                                     max-width:none;
                                                     height:auto;
@@ -100,14 +103,14 @@
 
                                     </div>
 
-                                    <div class="card-footer bg-white text-center">
+                                    <div class="card-footer border-top text-center">
 
                                         <a
                                             href="{{ lesson.attachment.url }}"
                                             download
-                                            class="btn btn-primary">
+                                            class="btn btn-primary premium-btn">
 
-                                            Descargar Imagen
+                                            <i class="bi bi-download me-1"></i>Descargar Imagen
 
                                         </a>
 
@@ -117,23 +120,23 @@
 
                             {% elif ".doc" in file or ".docx" in file or ".xls" in file or ".xlsx" in file or ".ppt" in file or ".pptx" in file %}
 
-                                <div class="card border-0 shadow-sm">
+                                <div class="card glass-card border-0 shadow-sm">
 
                                     <div class="card-body text-center p-5">
 
-                                        <div style="font-size:5rem;">
-                                            📊
+                                        <div class="display-1 text-primary opacity-75">
+                                            <i class="bi bi-file-earmark-spreadsheet"></i>
                                         </div>
 
                                         <h3 class="fw-bold mt-3">
                                             Documento Disponible
                                         </h3>
 
-                                        <p class="text-muted">
+                                        <p class="text-body-secondary">
                                             Este tipo de archivo no puede visualizarse directamente en el navegador.
                                         </p>
 
-                                        <p class="text-muted small">
+                                        <p class="text-body-secondary small">
                                             Descárgalo para abrirlo en Excel, Word o PowerPoint.
                                         </p>
 
@@ -142,7 +145,7 @@
                                             download
                                             class="btn btn-primary premium-btn">
 
-                                            ⬇️ Descargar Documento
+                                            <i class="bi bi-download me-1"></i>Descargar Documento
 
                                         </a>
 
@@ -152,19 +155,19 @@
 
                             {% else %}
 
-                                <div class="card border-0 shadow-sm">
+                                <div class="card glass-card border-0 shadow-sm">
 
                                     <div class="card-body text-center p-5">
 
-                                        <div style="font-size:5rem;">
-                                            📁
+                                        <div class="display-1 text-body-secondary">
+                                            <i class="bi bi-folder2-open"></i>
                                         </div>
 
                                         <h3 class="fw-bold mt-3">
                                             Archivo Disponible
                                         </h3>
 
-                                        <p class="text-muted">
+                                        <p class="text-body-secondary">
                                             Recurso compartido por el instructor.
                                         </p>
 
@@ -173,7 +176,7 @@
                                             download
                                             class="btn btn-primary premium-btn">
 
-                                            ⬇️ Descargar Archivo
+                                            <i class="bi bi-download me-1"></i>Descargar Archivo
 
                                         </a>
 
@@ -187,17 +190,18 @@
 
                     {% elif lesson.text_content %}
 
-                        <div class="card border-0 shadow-sm">
+                        <div class="card glass-card border-0 shadow-sm overflow-hidden">
 
-                            <div class="card-header bg-white">
+                            <div class="card-header border-bottom">
                                 <h5 class="fw-bold mb-0">
-                                    📖 Material de Estudio
+                                    <i class="bi bi-journal-richtext text-primary me-2"></i>Material de Estudio
                                 </h5>
                             </div>
 
                             <div class="card-body p-4">
 
                                 <div
+                                    class="lesson-text-content"
                                     style="
                                         white-space: pre-line;
                                         line-height: 1.9;
@@ -216,8 +220,8 @@
 
                         <div class="bg-dark text-white rounded-3 p-5 text-center shadow-sm">
 
-                            <span style="font-size:4rem;">
-                                📄
+                            <span class="display-3">
+                                <i class="bi bi-file-earmark-x"></i>
                             </span>
 
                             <h4 class="fw-bold mt-3">
@@ -230,76 +234,78 @@
 
                 </div>
                 {% if lesson.text_content %}
-                    <div class="p-3 bg-light rounded-3 border">
-                        <h5 class="fw-bold text-dark mb-2">Notas de Estudio:</h5>
-                        <p class="text-secondary m-0" style="white-space: pre-line; line-height: 1.6;">{{ lesson.text_content }}</p>
+                    <div class="p-3 bg-body-secondary rounded-3 border">
+                        <h5 class="fw-bold mb-2"><i class="bi bi-sticky me-2 text-primary"></i>Notas de Estudio:</h5>
+                        <p class="text-body-secondary m-0" style="white-space: pre-line; line-height: 1.6;">{{ lesson.text_content }}</p>
                     </div>
                 {% endif %}
 
                 {% if lesson.attachment and lesson.content_type == 'file' %}
-                    <div class="mt-4 p-3 bg-primary-subtle border border-primary-subtle rounded-3 d-flex justify-content-between align-items-center">
+                    <div class="mt-4 p-3 bg-primary-subtle border border-primary border-opacity-25 rounded-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="d-flex align-items-center gap-3">
-                            <span class="fs-3">📁</span>
+                            <span class="fs-3 text-primary"><i class="bi bi-paperclip"></i></span>
                             <div>
-                                <h6 class="fw-bold m-0 text-primary-dominant">Recurso Descargable Disponible</h6>
-                                <span class="small text-secondary">Código fuente o documentación adjunta por el profesor.</span>
+                                <h6 class="fw-bold m-0 text-primary">Recurso Descargable Disponible</h6>
+                                <span class="small text-body-secondary">Código fuente o documentación adjunta por el profesor.</span>
                             </div>
                         </div>
-                        <a href="{{ lesson.attachment.url }}" download class="btn btn-primary premium-btn btn-sm shadow-sm">Descargar Archivo</a>
+                        <a href="{{ lesson.attachment.url }}" download class="btn btn-primary premium-btn btn-sm shadow-sm flex-shrink-0">
+                            <i class="bi bi-download me-1"></i>Descargar Archivo
+                        </a>
                     </div>
                 {% endif %}
 
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-5">
                 {% if prev_lesson %}
-                    <a href="{% url 'courses:lesson_detail' lesson.course.identifier prev_lesson.order %}" class="btn btn-outline-dark premium-btn shadow-xs px-4">
-                        Lección Anterior
+                    <a href="{% url 'courses:lesson_detail' lesson.course.identifier prev_lesson.order %}" class="btn btn-outline-secondary premium-btn px-4">
+                        <i class="bi bi-chevron-left me-1"></i>Lección Anterior
                     </a>
                 {% else %}
-                    <button class="btn btn-outline-dark premium-btn px-4" disabled style="opacity: 0.4;">Anterior</button>
+                    <button class="btn btn-outline-secondary premium-btn px-4" disabled style="opacity: 0.4;">Anterior</button>
                 {% endif %}
 
                 {% if next_lesson %}
-                    <a href="{% url 'courses:lesson_detail' lesson.course.identifier next_lesson.order %}" class="btn btn-dark premium-btn shadow-sm px-4">
-                        Siguiente Lección ➡️
+                    <a href="{% url 'courses:lesson_detail' lesson.course.identifier next_lesson.order %}" class="btn btn-primary premium-btn shadow-sm px-4 ms-auto">
+                        Siguiente Lección<i class="bi bi-chevron-right ms-1"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'courses:course_detail' lesson.course.identifier %}" class="btn btn-success premium-btn shadow-sm px-4">
-                        🏁 Terminar Programa
+                    <a href="{% url 'courses:course_detail' lesson.course.identifier %}" class="btn btn-success premium-btn shadow-sm px-4 ms-auto">
+                        <i class="bi bi-trophy me-1"></i>Terminar Programa
                     </a>
                 {% endif %}
             </div>
         </div>
 
         <div class="col-xl-4 col-lg-5">
-            <div class="p-4 glass-card bg-white shadow-sm position-sticky" style="top: 90px;">
-                <h5 class="fw-bold mb-3 text-dark">Estatus de tu Lección</h5>
-                <p class="text-secondary small mb-4">Marca este bloque como completado para guardar tu avance matemático en los servidores e informar a tu instructor.</p>
+            <div class="p-4 glass-card sidebar-panel shadow-sm position-sticky" style="top: 90px;">
+                <h5 class="fw-bold mb-3"><i class="bi bi-check2-square me-2 text-primary"></i>Estatus de tu Lección</h5>
+                <p class="text-body-secondary small mb-4">Marca este bloque como completado para guardar tu avance matemático en los servidores e informar a tu instructor.</p>
 
                 <form action="{% url 'courses:toggle_complete' lesson.id %}" method="post" class="m-0">
                     {% csrf_token %}
                     {% if progress.completed %}
-                        <div class="alert alert-success text-center border-0 mb-3 py-2 fw-semibold" style="border-radius: 10px; font-size: 0.85rem;">
-                            ✅ Completada el {{ progress.completed_at|date:"d/m H:i" }}
+                        <div class="alert alert-success text-center border-0 mb-3 py-2 fw-semibold rounded-3" style="font-size: 0.85rem;">
+                            <i class="bi bi-check-circle-fill me-1"></i>Completada el {{ progress.completed_at|date:"d/m H:i" }}
                         </div>
                         <button type="submit" class="btn btn-outline-danger w-100 premium-btn btn-sm">
                             Marcar como Pendiente
                         </button>
                     {% else %}
-                        <div class="alert alert-warning text-center border-0 mb-3 py-2 fw-semibold" style="border-radius: 10px; font-size: 0.85rem;">
-                            ⏳ Pendiente de Estudio
+                        <div class="alert alert-warning text-center border-0 mb-3 py-2 fw-semibold rounded-3" style="font-size: 0.85rem;">
+                            <i class="bi bi-hourglass-split me-1"></i>Pendiente de Estudio
                         </div>
                         <button type="submit" class="btn btn-success w-100 premium-btn py-2 shadow-sm fw-bold">
-                            ✔ Marcar como Completada
+                            <i class="bi bi-check-lg me-1"></i>Marcar como Completada
                         </button>
                     {% endif %}
                 </form>
 
-                <hr class="text-muted my-4">
-                <div class="p-3 bg-light rounded-3 border text-center">
-                    <span class="small text-secondary d-block mb-1">Materia en curso:</span>
-                    <strong class="text-dark">{{ lesson.course.title }}</strong>
+                <hr class="text-muted my-4 opacity-25">
+                <div class="p-3 bg-body-secondary rounded-3 border text-center">
+                    <span class="small text-body-secondary d-block mb-1">Materia en curso:</span>
+                    <strong>{{ lesson.course.title }}</strong>
                 </div>
             </div>
         </div>

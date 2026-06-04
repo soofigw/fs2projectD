@@ -3,37 +3,40 @@
 {% block title %}Eliminar Curso{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-7">
+        <div class="col-md-7 col-lg-6">
 
-            <div class="glass-card p-5">
+            <div class="glass-card p-4 p-md-5 text-center text-md-start border border-danger border-opacity-25">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger-subtle text-danger mb-3" style="width: 4rem; height: 4rem;">
+                    <i class="bi bi-exclamation-triangle-fill fs-2"></i>
+                </div>
 
                 <h2 class="text-danger fw-bold mb-3">
                     Eliminar Curso
                 </h2>
 
-                <p class="lead">
+                <p class="lead text-body-secondary">
                     ¿Estás seguro de que deseas eliminar este curso?
                 </p>
 
-                <div class="alert alert-warning">
+                <div class="alert alert-warning border-0 rounded-3 mb-4">
                     <strong>{{ object.title }}</strong>
                     <br>
                     Esta acción no se puede deshacer.
                 </div>
 
-                <form method="post">
+                <form method="post" class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
                     {% csrf_token %}
 
                     <button type="submit"
                             class="btn btn-danger premium-btn">
-                        Sí, eliminar curso
+                        <i class="bi bi-trash me-1"></i>Sí, eliminar curso
                     </button>
 
                     <a href="{{ object.get_absolute_url }}"
-                       class="btn btn-secondary premium-btn">
-                        Cancelar
+                       class="btn btn-outline-secondary premium-btn">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
                     </a>
                 </form>
 

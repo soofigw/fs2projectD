@@ -3,35 +3,37 @@
 {% block title %}Nueva Lección{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4">
 
     <div class="row justify-content-center">
 
         <div class="col-lg-8">
 
-            <div class="card border-0 shadow-lg">
+            <div class="glass-card border-0 shadow-sm overflow-hidden">
 
-                <div class="card-body p-5">
+                <div class="card-accent"></div>
+
+                <div class="card-body p-4 p-md-5">
 
                     {% if object %}
                         <h2 class="fw-bold mb-2">
-                            ✏️ Editar Lección
+                            <i class="bi bi-pencil-square text-primary me-2"></i>Editar Lección
                         </h2>
 
-                        <p class="text-muted mb-4">
+                        <p class="text-body-secondary mb-4">
                             Modifica el contenido de esta lección.
                         </p>
                     {% else %}
                         <h2 class="fw-bold mb-2">
-                            ➕ Nueva Lección
+                            <i class="bi bi-plus-circle text-success me-2"></i>Nueva Lección
                         </h2>
 
-                        <p class="text-muted mb-4">
+                        <p class="text-body-secondary mb-4">
                             Agrega contenido a tu curso.
                         </p>
                     {% endif %}
 
-                    <hr class="mb-4">
+                    <hr class="mb-4 opacity-25">
 
                     <form method="post"
                           enctype="multipart/form-data">
@@ -80,8 +82,8 @@
 
                         <button
                             type="submit"
-                            class="btn btn-primary px-5">
-                            Guardar Lección
+                            class="btn btn-primary premium-btn px-5 shadow-sm">
+                            <i class="bi bi-save me-1"></i>Guardar Lección
                         </button>
 
                     </form>
